@@ -57,7 +57,7 @@ async def sender_bH(event):
             #         continue
 
                 # Forward media message to another bot
-                await bot.forward_messages(i, event.message)
+                await bot.forward_messages(i, event.message, bot_peer=False)
 
                 print(f"Forwarded media message to bot {i}")
 
