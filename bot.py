@@ -15,7 +15,7 @@ print("Starting...")
 APP_ID = config("APP_ID", default=0, cast=int)
 API_HASH = config("API_HASH", default=None, cast=str)
 SESSION = config("SESSION", default="", cast=str)
-FROM_ = config("FROM_CHANNEL", default="", cast=str)
+FROM = config("FROM_CHANNEL", default="", cast=str)
 TO = config("TO_CHANNEL", default="", cast=str)
 BOT_USER_ID = config("BOT_USER_ID", default=0, cast=int)
 
