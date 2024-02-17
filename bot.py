@@ -50,11 +50,11 @@ async def sender_bH(event):
             #     logging.warning(f"Blocked message containing one of the specified texts: {event.raw_text}")
             #     continue
 
-            if event.media:
-                user_response = MEDIA_FORWARD_RESPONSE
-                if user_response != 'yes':
-                    print(f"Media forwarding skipped by user for message: {event.raw_text}")
-                    continue
+            # if event.media:
+            #     user_response = MEDIA_FORWARD_RESPONSE
+            #     if user_response != 'yes':
+            #         print(f"Media forwarding skipped by user for message: {event.raw_text}")
+            #         continue
 
                 # Forward media message to another bot
                 await bot.forward_messages(i, event.message)
