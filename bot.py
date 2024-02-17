@@ -17,6 +17,7 @@ API_HASH = config("API_HASH", default=None, cast=str)
 SESSION = config("SESSION", default="", cast=str)
 FROM_ = config("FROM_CHANNEL", default="", cast=str)
 TO_ = config("TO_CHANNEL", default="", cast=str)
+USERS_TO_FORWARD = config("USERS_TO_FORWARD", default="", cast=lambda x: [int(i.strip()) for i in x.split(',')])
 
 MEDIA_FORWARD_RESPONSE = config("MEDIA_FORWARD_RESPONSE", default="yes").lower()
 
@@ -56,6 +57,14 @@ async def sender_bH(event):
 
         except Exception as e:
             print(f"Error forwarding message to channel {i}: {e}")
+    
+    # Forward the message to specified users
+    for user_id in USERS_TO_FORWARD:
+        try:
+            await steallootdealUser.send_message(user_id, event.raw_text)
+            print(f"Forwarded message to user {user_id}")
+        except Exception as e:
+            print(f"Error forwarding message to user {user_id}: {e}")
 
 # Run the bot
 print("Bot has started.")
