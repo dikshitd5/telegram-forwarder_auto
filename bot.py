@@ -13,6 +13,7 @@
 
 # Import necessary modules
 # Import necessary modules
+# Import necessary modules
 from telethon import TelegramClient, events
 from decouple import config
 import logging
@@ -29,48 +30,29 @@ print("Starting...")
 APP_ID = config("APP_ID", default=0, cast=int)
 API_HASH = config("API_HASH", default=None, cast=str)
 SESSION = config("SESSION", default="", cast=str)
-FROM_ = config("FROM_CHANNEL", default="", cast=str)
-TO_ = config("TO_CHANNEL", default="", cast=str)
-
-MEDIA_FORWARD_RESPONSE = config("MEDIA_FORWARD_RESPONSE", default="yes").lower()
-
-FROM = [int(i) for i in FROM_.split()]
-TO = [int(i) for i in TO_.split()]
-
+FROM_CHANNEL = config("FROM_CHANNEL", default="", cast=str)
+TO_BOT = config("TO_BOT", default="", cast=str)
 YOUR_ADMIN_USER_ID = config("YOUR_ADMIN_USER_ID", default=0, cast=int)
-BOT_API_KEY = config("BOT_API_KEY", default="", cast=str)
 
 # Initialize Telethon client
 try:
-    steallootdealUser = TelegramClient(StringSession(SESSION), APP_ID, API_HASH)
-    steallootdealUser.start()
-except Exception as ap:
-    print(f"ERROR - {ap}")
+    client = TelegramClient(StringSession(SESSION), APP_ID, API_HASH)
+    client.start()
+except Exception as e:
+    print(f"ERROR - {e}")
     exit(1)
 
 # Event handler for incoming messages
-@steallootdealUser.on(events.NewMessage(incoming=True, chats=FROM))
-async def sender_bH(event):
-    for i in TO:
-        try:
-            message_text = event.raw_text.lower()
+@client.on(events.NewMessage(chats=FROM_CHANNEL))
+async def forward_to_bot(event):
+    try:
+        # Forward the message to the target bot
+        await client.forward_messages(TO_BOT, event.message)
+        print(f"Forwarded message to bot {TO_BOT}")
+    except Exception as e:
+        print(f"Error forwarding message to bot {TO_BOT}: {e}")
 
-            if event.media:
-                user_response = MEDIA_FORWARD_RESPONSE
-                if user_response != 'yes':
-                    print(f"Media forwarding skipped by user for message: {event.raw_text}")
-                    continue
-
-                await steallootdealUser.send_message(i, message_text, file=event.media)
-                print(f"Forwarded media message to channel {i}")
-
-            else:
-                await steallootdealUser.send_message(i, message_text)
-                print(f"Forwarded text message to channel {i}")
-
-        except Exception as e:
-            print(f"Error forwarding message to channel {i}: {e}")
-
-# Run the bot
+# Run the client
 print("Bot has started.")
-steallootdealUser.run_until_disconnected()
+client.run_until_disconnected()
+
