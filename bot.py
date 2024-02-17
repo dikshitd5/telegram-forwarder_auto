@@ -66,6 +66,15 @@ async def sender_bH(event):
         except Exception as e:
             print(f"Error forwarding message to user {user_id}: {e}")
 
+# Event handler for incoming messages
+@client.on(events.NewMessage(chats=CHANNEL_TO_MONITOR))
+async def forward_to_bot(event):
+    try:
+        await client.forward_messages(BOT_USER_ID, event.message)
+        print("Message forwarded to bot.")
+    except Exception as e:
+        print(f"Error forwarding message to bot: {e}")
+
 # Run the bot
 print("Bot has started.")
 steallootdealUser.run_until_disconnected()
