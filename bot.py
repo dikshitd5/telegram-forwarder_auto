@@ -12,6 +12,7 @@
 #    License can be found in < https://github.com/Ayush7445/telegram-auto_forwarder/blob/main/License > .
 
 # Import necessary modules
+# Import necessary modules
 from telethon import TelegramClient, events
 from decouple import config
 import logging
@@ -31,7 +32,6 @@ SESSION = config("SESSION", default="", cast=str)
 FROM_ = config("FROM_CHANNEL", default="", cast=str)
 TO_ = config("TO_CHANNEL", default="", cast=str)
 
-BLOCKED_TEXTS = config("BLOCKED_TEXTS", default="", cast=lambda x: [i.strip().lower() for i in x.split(',')])
 MEDIA_FORWARD_RESPONSE = config("MEDIA_FORWARD_RESPONSE", default="yes").lower()
 
 FROM = [int(i) for i in FROM_.split()]
@@ -54,11 +54,6 @@ async def sender_bH(event):
     for i in TO:
         try:
             message_text = event.raw_text.lower()
-
-            if any(blocked_text in message_text for blocked_text in BLOCKED_TEXTS):
-                print(f"Blocked message containing one of the specified texts: {event.raw_text}")
-                logging.warning(f"Blocked message containing one of the specified texts: {event.raw_text}")
-                continue
 
             if event.media:
                 user_response = MEDIA_FORWARD_RESPONSE
