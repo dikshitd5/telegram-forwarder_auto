@@ -36,7 +36,7 @@ except Exception as ap:
     exit(1)
 
 # Initialize another bot client
-bot = TelegramClient("bot_session", api_id=APP_ID, api_hash=API_HASH, bot_token=BOT_API_KEY)
+bot = TelegramClient("bot_session", api_id=APP_ID, api_hash=API_HASH)
 
 # Event handler for incoming messages
 @steallootdealUser.on(events.NewMessage(incoming=True, chats=FROM))
