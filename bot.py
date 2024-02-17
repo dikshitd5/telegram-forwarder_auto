@@ -19,9 +19,6 @@ FROM_ = config("FROM_CHANNEL", default="", cast=str)
 TO = config("TO_CHANNEL", default="", cast=str)
 BOT_USER_ID = config("BOT_USER_ID", default=0, cast=int)
 
-FROM = [int(i) for i in FROM_.split()]
-TO = [int(i) for i in TO_.split()]
-
 YOUR_ADMIN_USER_ID = config("YOUR_ADMIN_USER_ID", default=0, cast=int)
 BOT_API_KEY = config("BOT_API_KEY", default="", cast=str)
 
