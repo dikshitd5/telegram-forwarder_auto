@@ -16,10 +16,9 @@ APP_ID = config("APP_ID", default=0, cast=int)
 API_HASH = config("API_HASH", default=None, cast=str)
 SESSION = config("SESSION", default="", cast=str)
 FROM_ = config("FROM_CHANNEL", default="", cast=str)
-TO_ = config("TO_CHANNEL", default="", cast=str)
+TO = config("TO_CHANNEL", default="", cast=str)
 USERS_TO_FORWARD = config("USERS_TO_FORWARD", default="", cast=lambda x: [int(i.strip()) for i in x.split(',')])
-
-MEDIA_FORWARD_RESPONSE = config("MEDIA_FORWARD_RESPONSE", default="yes").lower()
+BOT_USER_ID = config("BOT_USER_ID", default=0, cast=int)
 
 FROM = [int(i) for i in FROM_.split()]
 TO = [int(i) for i in TO_.split()]
