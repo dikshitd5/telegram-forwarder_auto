@@ -51,8 +51,8 @@ async def forward_messages():
                         print(f"Forwarded text message to channel {i}")
                 except Exception as e:
                     print(f"Error forwarding message to channel {i}: {e}")
-        await asyncio.sleep(90)  # Wait for 1 minute before checking the queue again
-        print("Bot is going to sleep for 60 seconds...")
+        await asyncio.sleep(30)  # Wait for 1 minute before checking the queue again
+        print("Bot is going to sleep for 30 seconds...")
 
 # Event handler for incoming messages
 @steallootdealUser.on(events.NewMessage(incoming=True, chats=FROM))
