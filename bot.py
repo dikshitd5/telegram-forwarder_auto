@@ -4,6 +4,7 @@ from decouple import config
 import logging
 from telethon.sessions import StringSession
 import os
+import asyncio
 
 # Configure logging
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s', level=logging.WARNING)
@@ -32,24 +33,32 @@ except Exception as ap:
     print(f"ERROR - {ap}")
     exit(1)
 
+# Define a queue for messages
+message_queue = []
+
+# Function to handle message forwarding
+async def forward_messages():
+    while True:
+        if message_queue:
+            message = message_queue.pop(0)
+            for i in TO:
+                try:
+                    if message.media:
+                        await steallootdealUser.send_message(i, message.text, file=message.media)
+                        print(f"Forwarded media message to channel {i}")
+                    else:
+                        await steallootdealUser.send_message(i, message.text)
+                        print(f"Forwarded text message to channel {i}")
+                except Exception as e:
+                    print(f"Error forwarding message to channel {i}: {e}")
+        await asyncio.sleep(60)  # Wait for 1 minute before checking the queue again
+
 # Event handler for incoming messages
 @steallootdealUser.on(events.NewMessage(incoming=True, chats=FROM))
-async def sender_bH(event):
-    for i in TO:
-        try:
-            message_text = event.raw_text.lower()
-
-            if event.media:
-                await steallootdealUser.send_message(i, message_text, file=event.media)
-                print(f"Forwarded media message to channel {i}")
-
-            else:
-                await steallootdealUser.send_message(i, message_text)
-                print(f"Forwarded text message to channel {i}")
-
-        except Exception as e:
-            print(f"Error forwarding message to channel {i}: {e}")
+async def queue_messages(event):
+    message_queue.append(event.message)
 
 # Run the bot
 print("Bot has started.")
+asyncio.ensure_future(forward_messages())
 steallootdealUser.run_until_disconnected()
